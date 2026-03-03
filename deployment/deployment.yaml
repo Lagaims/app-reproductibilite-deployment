@@ -1,4 +1,3 @@
-#| filename: "deployment/deployment.yaml"
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,13 +15,30 @@ spec:
         app: titanic
     spec:
       containers:
-      - name: titanic
-        image: lagaims/application:v0.0.3
-        ports:
-        - containerPort: 8000
-        env:
-        - name: JETON_API
-          valueFrom:
-            secretKeyRef:
-              name: api-jeton
-              key: JETON_API
+        - name: titanic
+          image: lagaims/application:v0.0.3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: JETON_API
+              valueFrom:
+                secretKeyRef:
+                  name: api-jeton
+                  key: JETON_API
+            - name: MLFLOW_TRACKING_URI
+              value: "https://user-lgaimard-mlflow.user.lab.sspcloud.fr"
+            - name: MLFLOW_TRACKING_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MLFLOW_TRACKING_USERNAME
+            - name: MLFLOW_TRACKING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MLFLOW_TRACKING_PASSWORD
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
