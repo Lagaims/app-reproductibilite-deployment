@@ -36,7 +36,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-            repository: 'lagaims/application'
+            repository: 'Lagaims/app-reproductibilite-test'
 
       - name: Train Model
         run: |
